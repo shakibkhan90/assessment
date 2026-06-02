@@ -1,0 +1,133 @@
+Md Shakib Khan
+10734436
+
+
+MAIN PROGRAM
+============
+
+Load locations data from file:
+    Open locations.txt in read mode
+    Load the JSON data from the file into data variable
+    Close the file
+    If any exception occurs, set data to empty list
+
+Display welcome message
+
+Loop endlessly:
+    Display menu options
+    Get user's choice and convert to lowercase
+
+    If choice is 'a':
+        Get city name from user
+        Call OpenWeather Geocoding API with city name
+        Get JSON response with up to 4 matching locations
+
+        If no results found:
+            Display "No matching locations."
+        Otherwise:
+            Display "Matching location(s) found:"
+            For each location in results:
+                Display location number and formatted location name
+
+            Ask user which location to add
+            Create a new location dictionary with name, country, latitude, longitude
+            Round latitude and longitude to 6 decimal places
+            If location has a state, add it to the dictionary
+            Append new location to data list
+            Save data to file
+            Display "Location added."
+
+    If choice is 'l':
+        If data is empty:
+            Display "No locations saved."
+        Otherwise:
+            Display "List of locations:"
+            For each location in data:
+                Display location number and formatted location name
+
+    If choice is 's':
+        If data is empty:
+            Display "No locations saved."
+        Otherwise:
+            Get search term from user (ensure it is not empty)
+            Display "Search results:"
+            For each location in data:
+                If search term (lowercase) is found in location (lowercase):
+                    Display location number and formatted location name
+            If no results were found:
+                Display "No results found."
+
+    If choice is 'v':
+        If data is empty:
+            Display "No locations saved."
+        Otherwise:
+            Ask user to select a location
+            Display location name, state (if applicable), and country
+            Display latitude and longitude coordinates
+
+    If choice is 'd':
+        If data is empty:
+            Display "No locations saved."
+        Otherwise:
+            Ask user to select a location
+            Remove the selected location from data list
+            Save data to file
+            Display "Location deleted."
+
+    If choice is 'q':
+        Display goodbye message 
+        Break out of loop to end program
+
+    Otherwise:
+        Display "Invalid choice."
+
+
+FUNCTIONS
+=========
+
+Function: input_something(prompt)
+    Parameters: prompt (string message to display)
+    Purpose: Repeatedly ask user for input until non-empty value is entered
+    Steps:
+        Get input from user with the prompt message
+        While input is empty or only whitespace:
+            Get input again
+        Return the input value
+    Returns: user input (string)
+
+
+Function: format_location(location)
+    Parameters: location (dictionary with location details)
+    Purpose: Create a formatted string of location name, state, and country
+    Steps:
+        If location dictionary contains 'state' key:
+            Return "name, state, country" format
+        Otherwise:
+            Return "name, country" format
+    Returns: formatted location string
+
+
+Function: select_option(prompt, options)
+    Parameters: prompt (string message), options (list to choose from)
+    Purpose: Repeatedly ask user to select an item from the options list
+    Steps:
+        Set valid_choice to False
+        While valid_choice is False:
+            Try:
+                Get number from user with prompt
+                Convert number to integer
+                If number is between 1 and length of options (inclusive):
+                    Return the item at (number - 1) in the options list
+            Except:
+                Continue asking
+    Returns: selected item from options list
+
+
+Function: save_data(data)
+    Parameters: data (list of location dictionaries)
+    Purpose: Write the data to locations.txt file in JSON format
+    Steps:
+        Open locations.txt file in write mode
+        Write data to file as JSON with indentation
+        Close the file
+    Returns: nothing
